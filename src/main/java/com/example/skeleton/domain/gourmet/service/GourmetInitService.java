@@ -22,7 +22,7 @@ public class GourmetInitService implements CommandLineRunner {
     private final RatingRepository ratingRepository;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
 
         // == 음식점 == //
         Gourmet gourmet1 = Gourmet.builder()
@@ -65,8 +65,12 @@ public class GourmetInitService implements CommandLineRunner {
                 .content("노맛.. 가지마세요.")
                 .build();
 
-        gourmetRepository.saveAll(List.of(gourmet1, gourmet2));
-        clientRepository.saveAll(List.of(client1, client2));
-        ratingRepository.saveAll(List.of(rating1, rating2));
+        boolean isDataCheck = clientRepository.existsByClientId(client1.getClientId());
+
+        if(!isDataCheck) {
+            gourmetRepository.saveAll(List.of(gourmet1, gourmet2));
+            clientRepository.saveAll(List.of(client1, client2));
+            ratingRepository.saveAll(List.of(rating1, rating2));
+        }
     }
 }
