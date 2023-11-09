@@ -12,8 +12,8 @@ public class ClientRequestDto {
     @NotBlank(message = "아이디를 입력해 주세요.")
     private String clientId;
     private String password;
-    private String latitude;
-    private String longitude;
+    private Double latitude;
+    private Double longitude;
     private Permission permission;
 
     public static ClientRequestDto of(String clientId, String password) {

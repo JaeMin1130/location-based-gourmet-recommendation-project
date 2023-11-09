@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class DiscordWebhookService {
     private final WebClient client;
-    private final DiscordWebhookService webhookService;
     private final ClientRepository clientRepo;
     private final GourmetRepository gourmetRepo;
 
@@ -44,8 +43,8 @@ public class DiscordWebhookService {
         for (Client client : clientList) {
 
             Point clientPoint = client.getPoint();
-            Double clientLatitude = Double.parseDouble(clientPoint.getLatitude());
-            Double clientLongitude = Double.parseDouble(clientPoint.getLongitude());
+            Double clientLatitude = clientPoint.getLatitude();
+            Double clientLongitude = clientPoint.getLongitude();
 
             // 2. 각 클라이언트 위치에 따라 500미터 이내의 식당 평점 높은 순으로 카테고리별 5개씩 조회
             List<Gourmet> chinaGourmetList = gourmetRepo.findTop5GourmetsByCategoryAndPoint("중식",
@@ -60,7 +59,7 @@ public class DiscordWebhookService {
                     japanGourmetList, fastfoodGourmetList);
 
             // 4. webhook로 request 전송(response 없음)
-            webhookService.sendDiscordMessage(message);
+            sendDiscordMessage(message);
 
         }
     }

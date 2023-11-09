@@ -51,14 +51,12 @@ public class WebClientService {
     public List<Gourmet> post(String path, int pageIndex) {
 
         String block = webClient.post()
-                .uri(uriBuilder ->
-                        uriBuilder.path("/" + path)
-                                .queryParam("type", OpenApiType.JSON.toLowerCase())
-                                .queryParam("pIndex", pageIndex)
-                                .queryParam("pSize", PAGE_SIZE)
-                                .queryParam("KEY", openApiSecretKey)
-                                .build()
-                )
+                .uri(uriBuilder -> uriBuilder.path("/" + path)
+                        .queryParam("type", OpenApiType.JSON.toLowerCase())
+                        .queryParam("pIndex", pageIndex)
+                        .queryParam("pSize", PAGE_SIZE)
+                        .queryParam("KEY", openApiSecretKey)
+                        .build())
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
@@ -72,8 +70,7 @@ public class WebClientService {
             JSONObject jsonRow = (JSONObject) jsonResponse.get(1);
             JSONArray jsonRowArray = (JSONArray) jsonRow.get("row");
 
-            result = jsonRowArray.stream().map(row ->
-                            makeGourmetEntity((JSONObject) row))
+            result = jsonRowArray.stream().map(row -> makeGourmetEntity((JSONObject) row))
                     .toList();
 
         } catch (Exception e) {
@@ -87,14 +84,12 @@ public class WebClientService {
         long result = 0;
 
         String block = webClient.post()
-                .uri(uriBuilder ->
-                        uriBuilder.path("/" + path)
-                                .queryParam("type", OpenApiType.JSON.toLowerCase())
-                                .queryParam("pIndex", DEFAULT_PAGE_INDEX)
-                                .queryParam("pSize", PAGE_SIZE)
-                                .queryParam("KEY", openApiSecretKey)
-                                .build()
-                )
+                .uri(uriBuilder -> uriBuilder.path("/" + path)
+                        .queryParam("type", OpenApiType.JSON.toLowerCase())
+                        .queryParam("pIndex", DEFAULT_PAGE_INDEX)
+                        .queryParam("pSize", PAGE_SIZE)
+                        .queryParam("KEY", openApiSecretKey)
+                        .build())
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
@@ -119,7 +114,8 @@ public class WebClientService {
         JSONObject totalCount = (JSONObject) jsonHeadArray.get(0);
         Long total = (Long) totalCount.get("list_total_count");
 
-        if (total == null || total == 0) return 0;
+        if (total == null || total == 0)
+            return 0;
 
         return total % PAGE_SIZE == 0 ? (total / PAGE_SIZE) : (total / PAGE_SIZE) + 1;
     }
@@ -128,7 +124,7 @@ public class WebClientService {
         return Gourmet.builder()
                 .name((String) item.get("BIZPLC_NM"))
                 .category((String) item.get("SANITTN_BIZCOND_NM"))
-                .point(Point.of((String) item.get("REFINE_WGS84_LAT"), (String) item.get("REFINE_WGS84_LOGT")))
+                .point(Point.of((Double) item.get("REFINE_WGS84_LAT"), (Double) item.get("REFINE_WGS84_LOGT")))
                 .address(Address.of((String) item.get("REFINE_ROADNM_ADDR"),
                         (String) item.get("REFINE_LOTNO_ADDR"),
                         (String) item.get("REFINE_ZIP_CD")))

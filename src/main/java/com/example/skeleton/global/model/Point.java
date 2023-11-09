@@ -14,16 +14,16 @@ import java.util.Map;
 public class Point {
 
     @Column(name = "latitude")
-    private String latitude;
+    private Double latitude;
 
     @Column(name = "longitude")
-    private String longitude;
+    private Double longitude;
 
-    public static Point of(String latitude, String longitude) {
+    public static Point of(Double latitude, Double longitude) {
         return new Point(latitude, longitude);
     }
 
-    public Map<String, String> toMap() {
+    public Map<String, Double> toMap() {
         return Map.of("latitude", this.latitude, "longitude", this.longitude);
     }
 

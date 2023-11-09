@@ -19,15 +19,15 @@ class DistrictServiceTest extends IntegrationTest {
     @Test
     void cachingSggInRedis() {
         // given
-        District testDistrict1 = District.of(1L, "강원", "강릉시", Point.of("128.8784972",	"37.74913611"));
-        HashOperations<String, String, String> hashDistricts = redisTemplate.opsForHash();
+        District testDistrict1 = District.of(1L, "강원", "강릉시", Point.of(128.8784972,	37.74913611));
+        HashOperations<String, String, Double> hashDistricts = redisTemplate.opsForHash();
         String key = "District::" + testDistrict1.getDosi() + "::" + testDistrict1.getSgg();
 
         // when
         hashDistricts.putAll(key, testDistrict1.getPoint().toMap());
 
         // then
-        Map<String, String> locationMap = hashDistricts.entries(key);
+        Map<String, Double> locationMap = hashDistricts.entries(key);
         Assertions.assertThat(locationMap.keySet()).containsOnly("latitude", "longitude");
         Assertions.assertThat(locationMap.values()).containsOnly(testDistrict1.getPoint().getLatitude(), testDistrict1.getPoint().getLongitude());
 

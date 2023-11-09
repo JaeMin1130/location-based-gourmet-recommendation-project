@@ -66,8 +66,8 @@ public class DistrictService {
 
                 // District 객체를 생성해 리스트에 추가합니다.
                 districtList.add(
-                        District.of((long) i, columns[0], columns[1], Point.of(columns[3], columns[2]))
-                );
+                        District.of((long) i, columns[0], columns[1], Point.of(Double.parseDouble(columns[3]), Double.parseDouble(columns[2])
+                )));
             }
         } catch (IOException e) {
             log.error("IOException during reading file", e);

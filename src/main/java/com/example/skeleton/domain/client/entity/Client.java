@@ -46,11 +46,11 @@ public class Client {
     public Client(String clientId, String password) {
         this.clientId = clientId;
         this.password = password;
-        this.point = Point.of("0", "0");
+        this.point = Point.of(0.0, 0.0);
         this.permission = Permission.UNALLOWED;
     }
 
-    public void setPoint(String latitude, String longitude) {
+    public void setPoint(Double latitude, Double longitude) {
         this.point = Point.of(latitude, longitude);
     }
 
